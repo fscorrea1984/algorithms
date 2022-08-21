@@ -1,0 +1,67 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  total={210mm,297mm},
+  left=20mm,
+  right=20mm,
+  top=20mm,
+  bottom=20mm,
+}
+
+\begin{document}
+\begin{algorithm}
+  \caption{merge}
+  \begin{algorithmic}[1]
+    \Function{merge}{$A,p,q,r$}\Comment{Where $A$ - array, $p$ - left, $q$ - middle, $r$ - right}
+    \State $nL = q - p + 1$\Comment{length of $A[p : q]$}
+    \State $nR = r - q$\Comment{length of $A[q + 1 : r]$}
+    \State Let $L[0 : nL]$ and $R[0 : nR]$ be new arrays
+    \For{$i = 0$ to $nL$}\Comment{copy $A[p : q]$ into $L[0 : nL]$}
+    \State $L[i] = A[p + i]$
+    \EndFor
+    \For{$j = 0$ to $nR$}\Comment{copy $A[q + 1 : r]$ into $R[0 : nR]$}
+    \State $R[j] = A[q + 1 + j]$
+    \EndFor
+    \State $i = 0$\Comment{$i$ indexes the smallest remaining element in $L$}
+    \State $j = 0$\Comment{$i$ indexes the smallest remaining element in $R$}
+    \State $k = p$ \\
+    \Comment{$k$ indexes the location in $A$ to fill} \\
+    \Comment{As long as each of the arrays $L$ and $R$ contains an unmerged element,} \\
+    \Comment{ copy the smallest unmerged element back into $A[p : r]$}
+    \While{$i < nL$ and $j < nR$}
+    \If{$L[i] leq R[j]$}
+    \State $A[k] = L[i]$
+    \State $i = i + 1$
+    \Else
+    \State $A[k] = R[j]$
+    \State $j = j + 1$
+    \EndIf
+    \State $k = k + 1$
+    \EndWhile \\
+    \Comment{Having gone through one of $L$ and $R$ entirely copy the } \\
+    \Comment{ remainder of the other to the end of $A[p : r]$}
+    \While{$i < nL$}
+    \State $A[k] = L[i]$
+    \State $i = i + 1$
+    \State $k = k + 1$
+    \EndWhile
+    \While{$j < nR$}
+    \State $A[k] = R[j]$
+    \State $j = j + 1$
+    \State $k = k + 1$
+    \EndWhile
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+\end{document}
