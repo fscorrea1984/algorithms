@@ -1,0 +1,38 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\usepackage{geometry}
+\geometry{
+  a4paper,
+  total={210mm,297mm},
+  left=20mm,
+  right=20mm,
+  top=20mm,
+  bottom=20mm,
+}
+
+\begin{document}
+\begin{algorithm}
+  \caption{mergesort}
+  \begin{algorithmic}[1]
+    \Function{mergesort}{$A, p, r$}
+    \If{$p \geq r$}\Comment{Zero or one element?}
+    \State return
+    \EndIf
+    \State $q = \lfloor (p + r)/2 \rfloor$ \Comment{midpoint of $A[p : r]$}
+    \State mergesort(A, p, q) \Comment{recursively sort $A[p : q]$}
+    \State mergesort(A, q + 1, r) \Comment{recursively sort $A[q + 1 : r]$} \\
+    \Comment{ merge $A[p : q]$ and $A[q + 1 : r]$ into $A[p : r]$} \\
+    \State merge(A, p, q, r)
+    \EndFunction
+  \end{algorithmic}
+\end{algorithm}
+\end{document}
