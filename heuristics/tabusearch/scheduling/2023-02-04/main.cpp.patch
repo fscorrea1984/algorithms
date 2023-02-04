@@ -1,0 +1,53 @@
+--- main1.cpp	2023-02-04 11:21:21.997885000 -0300
++++ main2.cpp	2023-02-04 11:30:41.470328000 -0300
+@@ -1,9 +1,6 @@
+ #include<iostream>
+-//#include<algorithm> we'll uncoment this when needed. or remove the line if no need arise up to the end.
+-//#include<array> for now a vector of vector will implement the nxn matrix.
+ #include<sstream>
+ #include<string>
+-//#include<tuple> just in case we decided to use tuple instead of pair
+ #include<utility>
+ #include<vector>
+ #include"classes.h"
+@@ -13,14 +10,14 @@
+ int limit_it;
+ int limit_best;
+ int N;
++int count = 0;
++int it = 0;
+ 
+ vector<int> *r;
+ vector<int> *d;
+ 
+ int main(int argc,char **argv) {
+ 
+-  /** --- **/
+-
+   string line = " ", dummy;
+ 
+   getline(cin,line);
+@@ -43,17 +40,19 @@
+     d[i-1] = b;
+   }
+ 
+-  //randomize vectors r and d
+-
+   random_device gen;
+   mt1337 mt(gen());
+   shuffle(r.begin(),r.end(),mt);
+   shuffle(d.begin(),d.end(),mt);
+ 
+-  //create solution and tabu objects
+-
+   Solution solution(N);
+   Tabu tabu(N);
++
++  while(count < limit_best || it < limit_it) {
++    tabu.N();
++    count++;
++    it++;
++  }
+   
+   return 0;
+   

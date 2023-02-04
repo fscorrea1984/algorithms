@@ -1,0 +1,89 @@
+--- classes1.cpp	2023-02-04 11:14:17.812367000 -0300
++++ classes2.cpp	2023-02-04 11:26:04.982406000 -0300
+@@ -7,12 +7,6 @@
+ 
+ using namespace std;
+ 
+-  /** ---
+-      Solution constructor must:
+-      - allocate s with size N;
+-      - create s as a random permutation of the N jobs
+- ---  **/
+-
+ Solution::Solution(int n) {
+ 
+   nn = n;
+@@ -27,13 +21,9 @@
+   mt1337 mt(gen());
+   shuffle(s.begin(),s.end(),mt);
+   
+-  //check if s is feasible and keep reshuffling until getting a feasible s
+-
+   while((fbest = check_s()) == -1)
+     shuffle(s.begin(),s.end(),mt);
+ 
+-  //allocate best then copy each element from s
+-  
+   best = new vector<int>[n];
+   for(vector<int>::iterator it = best.begin(); it != best.end(); ++it)
+     for(vector<int>::iterator sit = s.begin(); sit != s.end(); ++sit)
+@@ -52,8 +42,6 @@
+ 
+   int t = 1;
+   
+-  //check s for feasibility
+-  
+   for(vector<int>::iterator::it = s.begin(); it != s.end(); ++it) {
+     if(r.at(*it - 1) > t) {
+       cerr << "This tentative solution is not feasible" << endl;
+@@ -63,8 +51,6 @@
+       t++;
+   }
+ 
+-  //calculate maximum lateness of s and store at ILmax
+-
+     t = 1;
+ 
+     for(vector<int>::iterator::it = s.begin(); it != s.end(); ++it) {
+@@ -78,14 +64,6 @@
+     
+ }
+ 
+-/** ---
+-
+-    Tabu constructor must:
+-    - allocate L with N cells
+-    - allocate a vector with N cells at each of N cells of L
+-
+---- **/
+-
+ Tabu::Tabu(int n) {
+ 
+   nn = n;
+@@ -153,8 +131,6 @@
+ 	}
+     }
+ 
+-  //all pairs a,b were tested, so get best choice from top
+-
+   for(int i = 0; i < 5; i++) {
+     if(T[i] == 0) {
+       ia = top[i].first.first;
+@@ -190,8 +166,6 @@
+   vector<int> v = *V;
+   int t = 1;
+ 
+-  //check v for feasibility
+-
+   for(vector<int>::iterator::vit = v.begin(); vit != v.end(); ++vit) {
+     if(r.at(*vit - 1) > t) {
+       cerr << "This tentative solution is not feasible" << endl;
+@@ -200,8 +174,6 @@
+     else
+       t++;
+   }
+-
+-  //calculate Lmax for v
+ 
+   t = 1;
+ 

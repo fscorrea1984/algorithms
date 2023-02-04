@@ -1,0 +1,47 @@
+--- classes1.h	2023-02-04 10:02:57.875750000 -0300
++++ classes2.h	2023-02-04 11:27:18.292596000 -0300
+@@ -14,16 +14,16 @@
+ 
+   friend class Tabu;
+ 
+-  vector<int> *s; // current solution, for now a vector of size n to be determined at input file
++  vector<int> *s;
+ 
+-  vector<int> *best; // the solution for which F(best) has the greatest value so far
++  vector<int> *best;
+ 
+  public:
+-  Solution(int); // constructor with the number n of jobs as argument
++  Solution(int);
+   ~Solution();
+-  int check_s(void) //ensure initial s to be feasible, then calc its lateness (stored at ILmax)
+-  int ILmax; //Lmax of initial s
+-  int fbest; //the greatest value so far
++  int check_s(void);
++  int ILmax;
++  int fbest;
+   int nn;
+   
+ };
+@@ -32,15 +32,15 @@
+ 
+   friend class Solution;
+ 
+-  vector<vector<int> *> *L; // nxn matrix
+-  vector<Pair <Pair <int,int> , int >> top(5); //top five solutions in N(i,k)
+-  vector<int> sol; // first, = s. next, swap the indexes of a and b. calculate feasibility of new sol. if feasible, calculate lateness. last, F(sol) = inf - lateness. compare F(sol) with fbest. update the latter if needed. restore sol = s and start over again with next pair of a and b until a = b = n.
++  vector<vector<int> *> *L;
++  vector<Pair <Pair <int,int> , int >> top(5);
++  vector<int> sol;
+ 
+  public:
+-  Tabu(int); // takes the number n of jobs as parameter
++  Tabu(int);
+   ~Tabu();
+-  void N(void); // sweep though each pair a,b <= n then find their indexes in sol; more details on implementation
+-  int F(vector<int> *); // objective function: the greatest integer minus Lmax, argument is this.sol. Returned value may update best and fbest.
++  void N(void);
++  int F(vector<int> *);
+   int Lmax;
+   int nn;
+   
