@@ -17,7 +17,10 @@ public:
   int v;
   Adj *next;
 
-  Adj(int x) : v(x) { next = nullptr; }
+  Adj(int x) : v(x) {
+    next = nullptr;
+
+  }
   ~Adj() {}
   
 };
@@ -31,21 +34,21 @@ public:
   int d;
   int pi;
 
-  Node() {
+  Node() { //constructor
     color = 'w';
     n = 0;
     d = 0;
     pi = -1;
   }
-  Node(char c, int x, int y, int z) : color(c), n(x), d(y), pi(z) {}
+  Node(char c, int x, int y, int z) : color(c), n(x), d(y), pi(z) {} //constructor
   ~Node () {}
-  Node(const Node& node) {
+  Node(const Node& node) { //copy constructor
     color = node.color;
     n = node.n;
     d = node.d;
     pi = node.pi;
   }  
-  Node operator=(const Node& node) {
+  Node operator=(const Node& node) { //copy assignment
     if(this != &node) {
       color = node.color;
       n = node.n;
@@ -85,7 +88,7 @@ int main(int argc, char **argv) {
   }
 
   vector<Adj *> adj_list(N,nullptr);
-  vector<Adj *> list_adj(N,nullptr);
+  vector<Adj *> last_adj(N,nullptr);
   
   for(int i = 0; i < N; i++) {
     getline(ifile,line);
@@ -96,12 +99,22 @@ int main(int argc, char **argv) {
     --b;
     if(adj_list[a] == nullptr) {
       adj_list[a] = new Adj(b);
-      list_adj[a] = adj_list[a];
+      last_adj[a] = adj_list[a];
     }
     else {
-      list_adj[a]->next = new Adj(b);
-      list_adj[a] = list_adj[a]->next;
+      last_adj[a]->next = new Adj(b);
+      last_adj[a] = last_adj[a]->next;
     }
+    if(adj_list[b] == nullptr){
+      adj_list[b] = new Adj(a);
+      last_adj[b] = adj_list[b];
+    }
+    else {
+	last_adj[b]->next = new Adj(a);
+	last_adj[b] = last_adj[b]->next;
+      }
+    //  last_adj[a]->inv = last_adj[b];
+    //  last_adj[b]->inv = last_adj[a];
   }
 
   ifile.close();
@@ -110,19 +123,19 @@ int main(int argc, char **argv) {
   
   // BFS
 
-  Node nodes[N];
-
+  //vector<Pair<bool,bool>> visited(N,false);
   string str(argv[1]);
   
   int s = stoi(argv[1],nullptr,10);
   --s;
 
+  vector<Node> nodes(N);
+  
   for(int i = 0; i < N; i++)
-    if(i = s)
+    if(i == s)
       nodes[s] = {'g',i,0,-1};
     else
       nodes[i] = {'w',i,0,-1};      
-
 
     queue<int> Q;
 
@@ -131,25 +144,24 @@ int main(int argc, char **argv) {
     while(!Q.empty()) {
       int u = Q.front();
       Q.pop();
-      for(Adj *current = adj_list[u]; current != nullptr; current = current->next) {
+      Adj *current = adj_list[u];
+      while(current != nullptr) {
 	int v = current->v;
 	if(nodes[v].color == 'w') {
 	  nodes[v].color = 'g';
-	  nodes[v].d = (nodes[u].d+1);
+	  nodes[v].d = (nodes[u].d)+1;
 	  nodes[v].pi = nodes[u].n;
 	  Q.push(nodes[v].n);
 	}
+	current = current->next;
       }
       nodes[u].color = 'b';  
     }
 
   // test
 
-  for(int i = 0; i < N; i++) {
-    cout << "Node[" << i << "].color == " << nodes[i].color << endl;
-    cout << "Node[" << i << "].color == " << nodes[i].d << endl;
-    cout << "Node[" << i << "].color == " << nodes[i].pi << endl;
-  }
+  for(int i = 0; i < N; i++)
+    cout << "| " << i << " | " << nodes[i].color << " | " << nodes[i].d << " | " << nodes[i].pi << " |" << endl;
 
   return 0;
   
