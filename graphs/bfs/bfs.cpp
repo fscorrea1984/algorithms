@@ -33,8 +33,8 @@ public:
 
   Node() {
     color = 'w';
-    n = -1;
-    d = -1;
+    n = 0;
+    d = 0;
     pi = -1;
   }
   Node(char c, int x, int y, int z) : color(c), n(x), d(y), pi(z) {}
@@ -45,7 +45,7 @@ public:
     d = node.d;
     pi = node.pi;
   }  
-  Node& operator=(const Node& node) {
+  Node operator=(const Node& node) {
     if(this != &node) {
       color = node.color;
       n = node.n;
@@ -110,47 +110,45 @@ int main(int argc, char **argv) {
   
   // BFS
 
-  vector<Node *> nodes(N);
+  Node nodes[N];
 
   string str(argv[1]);
   
   int s = stoi(argv[1],nullptr,10);
   --s;
 
-  for(int i = 0; i < N; i++) {
+  for(int i = 0; i < N; i++)
     if(i = s)
-      nodes[i] = new Node('g',i,0,-1);
+      nodes[s] = {'g',i,0,-1};
     else
-      nodes[i] = new Node('w',i,inf,-1);
+      nodes[i] = {'w',i,0,-1};      
 
 
-    queue<Node *> Q;
+    queue<int> Q;
 
-    Q.push(nodes[s]);
+    Q.push(nodes[s].n);
 
     while(!Q.empty()) {
-      Node *u = new Node(*Q.front());
+      int u = Q.front();
       Q.pop();
-      for(Adj *current = adj_list[u->n]; current != nullptr; current = current->next) {
+      for(Adj *current = adj_list[u]; current != nullptr; current = current->next) {
 	int v = current->v;
-	if(nodes[v]->color == 'w') {
-	  nodes[v]->color = 'g';
-	  nodes[v]->d = (u->d)+1;
-	  nodes[v]->pi = u->n;
-	  Q.push(nodes[v]);
+	if(nodes[v].color == 'w') {
+	  nodes[v].color = 'g';
+	  nodes[v].d = (nodes[u].d+1);
+	  nodes[v].pi = nodes[u].n;
+	  Q.push(nodes[v].n);
 	}
       }
-      u->color = 'b';
+      nodes[u].color = 'b';  
     }
-    
-  }
 
   // test
 
   for(int i = 0; i < N; i++) {
-    cout << "Node[" << i << "].color == " << nodes[i]->color << endl;
-    cout << "Node[" << i << "].color == " << nodes[i]->d << endl;
-    cout << "Node[" << i << "].color == " << nodes[i]->pi << endl;
+    cout << "Node[" << i << "].color == " << nodes[i].color << endl;
+    cout << "Node[" << i << "].color == " << nodes[i].d << endl;
+    cout << "Node[" << i << "].color == " << nodes[i].pi << endl;
   }
 
   return 0;
